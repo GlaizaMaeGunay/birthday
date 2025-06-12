@@ -272,11 +272,11 @@
         drawConfetti();
       })();
 
-      document.addEventListener("DOMContentLoaded", function () {
+ document.addEventListener("DOMContentLoaded", function () {
   const cake = document.querySelector(".cake");
   const candleCountDisplay = document.getElementById("candleCount");
   let candles = [];
-  const maxCandles = 27;  // Fixed number of candles
+  const maxCandles = 27;
 
   function updateCandleCount() {
     const activeCandles = candles.filter(
@@ -288,8 +288,8 @@
   function addCandle(left, top) {
     const candle = document.createElement("div");
     candle.className = "candle";
-    candle.style.left = left + "px";
-    candle.style.top = top + "px";
+    candle.style.left = `${left}px`;
+    candle.style.top = `${top}px`;
 
     const flame = document.createElement("div");
     flame.className = "flame";
@@ -300,11 +300,28 @@
     updateCandleCount();
   }
 
-  // Automatically create 27 candles on page load
-  for (let i = 0; i < maxCandles; i++) {
-    const left = Math.random() * (cake.offsetWidth - 12); // Random horizontal position
-    const top = Math.random() * (cake.offsetHeight - 35); // Random vertical position
-    addCandle(left, top);
+  // Centered placement logic — 3 rows of 9 candles
+  const rows = 3;
+  const cols = 9;
+  const spacingX = 22; // horizontal spacing between candles
+  const spacingY = 20; // vertical spacing between rows
+  const candleWidth = 12;
+
+  const cakeWidth = cake.offsetWidth;
+  const cakeHeight = cake.offsetHeight;
+
+  const startX = (cakeWidth - (cols - 1) * spacingX) / 2;
+  const startY = 40; // consistent top position to stay on top layer
+
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const index = row * cols + col;
+      if (index >= maxCandles) break;
+
+      const left = startX + col * spacingX;
+      const top = startY + row * spacingY;
+      addCandle(left, top);
+    }
   }
 });
 
